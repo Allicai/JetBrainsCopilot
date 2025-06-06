@@ -12,6 +12,8 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 
+private const val OPENAI_API_KEY = "OPENAI_API_KEY"
+
 class CopilotAction : AnAction("Copilot Complete", "AI-powered code completion", null) {
     override fun actionPerformed(e: AnActionEvent) {
         val editor: Editor? = e.getData(com.intellij.openapi.actionSystem.CommonDataKeys.EDITOR)
@@ -38,9 +40,10 @@ class CopilotAction : AnAction("Copilot Complete", "AI-powered code completion",
     }
 
     private fun callOpenAI(prompt: String, callback: (String) -> Unit) {
-        val apiKey = System.getenv("OPENAI_API_KEY")
-                ?: return callback("// ERROR: No API key found")
-
+        val apiKey = System.getenv("OPENAI_API_KEY") ?: OPENAI_API_KEY
+        if (apiKey == "OPENAI_API_KEY") {
+            return callback("Please enter a proper API key")
+        }
         val client = OkHttpClient()
         val mediaType = "application/json".toMediaType()
         val json = """
