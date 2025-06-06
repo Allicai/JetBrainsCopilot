@@ -6,10 +6,12 @@
 
     <depends>com.intellij.modules.platform</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
-    <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.allicai.jetbrainscopilot.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
-        <postStartupActivity implementation="com.github.allicai.jetbrainscopilot.startup.MyProjectActivity" />
-    </extensions>
+    <actions>
+        <action id="CopilotAction"
+                class="com.github.allicai.jetbrainscopilot.actions.CopilotAction"
+                text="Copilot Complete"
+                description="Trigger Copilot-style AI code completion">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift P"/>
+        </action>
+    </actions>
 </idea-plugin>
